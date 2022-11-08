@@ -298,7 +298,18 @@ function drawGraph() {
 				})
 
 		document.getElementById(el.id).parentElement.appendChild(document.getElementById(el.id))
+		document.getElementById(getCountyRGB(county)).style.opacity = 0.3	
 		document.getElementById(el.id).style.stroke = 'black'
+	}}
+
+	function getCountyRGB(county) {
+	if ((county.series_complete_pop_pct != 0) && !isNaN(county.series_complete_pop_pct) && (+county.surprise >= 0)){
+		let x = (Math.abs(county.surprise) - psminmax[0])/( psminmax[1] - psminmax[0])
+		return scale(parseFloat(county.series_complete_pop_pct), parseFloat(x))								
+	}
+	else if ((county.series_complete_pop_pct != 0) && !isNaN(county.series_complete_pop_pct) && ((county.surprise) <= 0)) {
+		let v = (Math.abs(county.surprise) - nsminmax[0])/(nsminmax[1] - nsminmax[0]) 
+		return scale(parseFloat(county.series_complete_pop_pct), Math.abs(parseFloat(v)))
 	}}
 
 	function handleMouseOut(el) {
@@ -314,6 +325,7 @@ function drawGraph() {
 				.style("left", "-1000px")  
 				.style("top", "-1000px")   
 		document.getElementById(el.id).style.stroke = 'white'
+		document.getElementById(getCountyRGB(county)).style.opacity = 1
 	}
 
 	function handleMouseMove(el) {
