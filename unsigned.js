@@ -3,6 +3,7 @@ let count = 0, row = "", counties = [], surpriseData = [], validation = [], chec
 let timeout = null, nsminmax, psminmax
 let mouseStartTime, mouseIdleTime, mouseLog = []
 let sd, avg
+let rgbColor, svg
 let red = "rgb(172,32,47)";
 let purple = "rgb(116,2,128)";
 let blue = "rgb(34,101,163)";
@@ -134,7 +135,7 @@ function drawGraph() {
         .scaleExtent([1, 8])
         .on('zoom', zoomed);
 
-	let svg = section
+	svg = section
 		.append("svg")
 			.attr("viewBox", "0 0 1100 540")
 			.attr("preserveAspectRatio", "xMinYMin meet")
@@ -189,13 +190,11 @@ function drawGraph() {
 			.attr("stroke", "#FFF")
 			.attr("stroke-width", .3)
 			.attr("id", (d) => d.id)
+			.attr("class", function(d) {    let countyData = getCountyByFips(d.id)	
+											return getCountyRGB(countyData).replaceAll(', ', '').replace('(','').replace(')','');
+			})
 			.attr("fill", (d) => {      let countyData = getCountyByFips(d.id)
-										if ((countyData.series_complete_pop_pct != 0) && !isNaN(countyData.series_complete_pop_pct)){ 
-											let x = (Math.abs(+d.properties.Surprise) - psminmax[0])/( psminmax[1] - psminmax[0])
-											return scale(parseFloat(countyData.series_complete_pop_pct), parseFloat(x))								
-										}	
-										else
-											return texture.url();
+										return getCountyRGB(countyData)
 								 })
 			.attr("data-fips", (d) => d.id)
 			.attr("data-vaccinations", (d) => {getCountyByFips(d.id).series_complete_pop_pct})
@@ -295,9 +294,19 @@ function drawGraph() {
 				})
 
 		document.getElementById(el.id).parentElement.appendChild(document.getElementById(el.id))
-		document.getElementById((scale(parseFloat(county.series_complete_pop_pct), parseFloat((Math.abs(county.surprise) - psminmax[0])/( psminmax[1] - psminmax[0]))))).style.opacity = 0.3	
+		document.getElementById(getCountyRGB(county)).style.opacity = 0.3	
 		document.getElementById(el.id).style.stroke = 'black'
 	}}
+
+	function getCountyRGB(countyData){
+		if ((countyData.series_complete_pop_pct != 0) && !isNaN(countyData.series_complete_pop_pct)){ 
+				let x = (Math.abs(+countyData.surprise) - psminmax[0])/( psminmax[1] - psminmax[0])
+				return scale(parseFloat(countyData.series_complete_pop_pct), parseFloat(x))								
+		}	
+		else
+				return texture.url();
+		
+	}
 
 	function handleMouseOut(el) {
 		let county = getCountyByFips(el.id);
@@ -380,4 +389,14 @@ function setSurprise(geojson){
 			}
 		}
 	}
+}
+
+function createTexture(color){
+	return textures.lines()
+                .orientation("vertical", "horizontal")
+                .size(4)
+                .strokeWidth(0.3)
+                .shapeRendering("crispEdges")
+                .stroke("black")
+                .background(color)
 }

@@ -5304,9 +5304,21 @@
 							var e, n, r, a, f, i;
 						})
 						.attr("id", (t) => e(t.v))
-						.attr("fill", function(t) {
-							//console.log(e(t.v))
+						.attr("fill", function(t) {							
 							return e(t.v);
+						})
+						.on("mouseover", function(t){this.style.opacity = 0.3;})
+						.on("mouseout", function(t){this.style.opacity = 1;})
+						.on("click", function(t) {							      
+									if (rgbColor != null) {								
+										d3.selectAll('.'.concat(rgbColor.replaceAll(', ', '').replace('(','').replace(')',''))).attr("fill", rgbColor)
+										d3.selectAll('.'.concat(rgbColor.replaceAll(', ', '').replace('(','').replace(')',''))).style("opacity", 1)
+									}
+									rgbColor = e(t.v)
+									let texture = createTexture(rgbColor)
+									svg.call(texture)
+									d3.selectAll('.'.concat(rgbColor.replaceAll(', ', '').replace('(','').replace(')',''))).attr("fill", texture.url())
+									d3.selectAll('.'.concat(rgbColor.replaceAll(', ', '').replace('(','').replace(')',''))).style('opacity', 0.7)
 						}),
 					t && i.svgGroup.attr("id", t)
 				);
