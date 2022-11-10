@@ -5303,22 +5303,28 @@
 							return (e = t), (n = o), (r = c.length), (a = c[t.r].length), (f = Pr().domain([0, a]).range([-Math.PI / 6, Math.PI / 6])), (i = Pr().domain([0, r]).range([n, 0])), qf().innerRadius(i(e.r + 1)).outerRadius(i(e.r)).startAngle(f(e.c)).endAngle(f(e.c + 1))();
 							var e, n, r, a, f, i;
 						})
-						.attr("id", (t) => e(t.v))
+						.attr("id", (t) => e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb','legend'))
 						.attr("fill", function(t) {							
 							return e(t.v);
 						})
-						.on("mouseover", function(t){this.style.opacity = 0.3;})
-						.on("mouseout", function(t){this.style.opacity = 1;})
-						.on("click", function(t) {							      
-									if (rgbColor != null) {								
-										d3.selectAll('.'.concat(rgbColor.replaceAll(', ', '').replace('(','').replace(')',''))).attr("fill", rgbColor)
-										d3.selectAll('.'.concat(rgbColor.replaceAll(', ', '').replace('(','').replace(')',''))).style("opacity", 1)
-									}
-									rgbColor = e(t.v)
-									let texture = createTexture(rgbColor)
-									svg.call(texture)
-									d3.selectAll('.'.concat(rgbColor.replaceAll(', ', '').replace('(','').replace(')',''))).attr("fill", texture.url())
-									d3.selectAll('.'.concat(rgbColor.replaceAll(', ', '').replace('(','').replace(')',''))).style('opacity', 0.7)
+						.on("mouseover", function(t){//this.style.border = '5px solid red';
+						    let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
+							document.getElementById(id).parentElement.appendChild(document.getElementById(id))
+							d3.select('#'.concat(id)).style('stroke','white')
+							d3.select('#'.concat(id)).style('stroke-width',2.5)
+						})
+						.on("mouseout", function(t){
+							let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
+							d3.select('#'.concat(id)).style('stroke-width',0.2)
+						})
+						.on("click", function(t) {			
+									let id = e(t.v).replaceAll(', ', '').replace('(','').replace(')','')
+									associatedIDs.forEach(function (item, index) {
+										if (item != id){
+											d3.selectAll('.'.concat(item)).style("fill", "#f0f0f0")
+										}
+									});
+									d3.selectAll('.'.concat(id)).style("fill", e(t.v))
 						}),
 					t && i.svgGroup.attr("id", t)
 				);

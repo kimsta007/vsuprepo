@@ -1,5 +1,6 @@
 let data, geoData, geojson, positiveSurprise, negativeSurprise;
 let count = 0, row = "", counties = [], surpriseData = [], validation = [], checkSurprise = [], nsurprise = [], psurprise = [];
+let associatedIDs = [], associatedIDx = []
 let timeout = null, nsminmax, psminmax
 let mouseStartTime, mouseIdleTime, mouseLog = []
 let sd, avg
@@ -141,6 +142,14 @@ function drawGraph() {
 			.attr("preserveAspectRatio", "xMinYMin meet")
 			.attr("class","svg-content")
 			.attr("id", "csvg")
+			.on("dblclick", function(){
+				associatedIDx.forEach(function(item, index){
+					if (item.includes('rgb')) {
+						console.log("Click", item)
+						d3.selectAll('.'.concat(item.replaceAll(', ', '').replace('(','').replace(')',''))).style('fill', item)
+					}
+				})
+			})
     
     let g = svg.append('g')
 	
@@ -191,7 +200,13 @@ function drawGraph() {
 			.attr("stroke-width", .3)
 			.attr("id", (d) => d.id)
 			.attr("class", function(d) {    let countyData = getCountyByFips(d.id)	
-											return getCountyRGB(countyData).replaceAll(', ', '').replace('(','').replace(')','');
+											let id = getCountyRGB(countyData)
+											let cid = id.replaceAll(', ', '').replace('(','').replace(')','')
+											if (!associatedIDs.includes(cid)){
+												associatedIDs.push(cid)
+												associatedIDx.push(id)
+											}
+											return cid;
 			})
 			.attr("fill", (d) => {      let countyData = getCountyByFips(d.id)
 										return getCountyRGB(countyData)
@@ -294,7 +309,10 @@ function drawGraph() {
 				})
 
 		document.getElementById(el.id).parentElement.appendChild(document.getElementById(el.id))
-		document.getElementById(getCountyRGB(county)).style.opacity = 0.3	
+		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
+		document.getElementById(id).parentElement.appendChild(document.getElementById(id))
+		d3.select('#'.concat(id)).style('stroke','white')
+		d3.select('#'.concat(id)).style('stroke-width',2.5)
 		document.getElementById(el.id).style.stroke = 'black'
 	}}
 
@@ -321,7 +339,8 @@ function drawGraph() {
 				.style("left", "-1000px")  
 				.style("top", "-1000px")   
 		document.getElementById(el.id).style.stroke = 'white'
-		document.getElementById((scale(parseFloat(county.series_complete_pop_pct), parseFloat((Math.abs(county.surprise) - psminmax[0])/( psminmax[1] - psminmax[0]))))).style.opacity = 1
+		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
+		d3.select('#'.concat(id)).style('stroke-width',0.2)
 	}
 
 	function handleMouseMove(el) {
@@ -397,6 +416,6 @@ function createTexture(color){
                 .size(4)
                 .strokeWidth(0.3)
                 .shapeRendering("crispEdges")
-                .stroke("black")
+                .stroke("white")
                 .background(color)
 }
