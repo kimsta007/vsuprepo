@@ -296,7 +296,7 @@ function drawGraph() {
 
 		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
 		d3.select('#'.concat(id)).raise()
-		d3.select('#'.concat(id)).style('stroke','white')
+		d3.select('#'.concat(id)).style('stroke','black')
 		d3.select('#'.concat(id)).style('stroke-width',2.5)
 		if (toggled) {
 			d3.select('#'.concat('c'.concat(el.id))).raise()
@@ -334,11 +334,11 @@ function drawGraph() {
 		if (toggled) {		
 			d3.select('#'.concat('c'.concat(el.id))).style("stroke", "white")
 			d3.select('#'.concat('c'.concat(el.id))).style("stroke-width", 0.2)
+			d3.selectAll('.stateBorder').raise()
 		}
 		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
+		d3.select('#'.concat(id)).style('stroke','white')
 		d3.select('#'.concat(id)).style('stroke-width',0.2)
-		d3.selectAll('.stateBorder').raise()
-
 	}
 
 	function handleMouseMove(el) {

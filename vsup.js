@@ -5310,11 +5310,12 @@
 						.on("mouseover", function(t){
 						    let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
 							document.getElementById(id).parentElement.appendChild(document.getElementById(id))
-							d3.select('#'.concat(id)).style('stroke','white')
+							d3.select('#'.concat(id)).style('stroke','black')
 							d3.select('#'.concat(id)).style('stroke-width',2.5)
 						})
 						.on("mouseout", function(t){
 							let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
+							d3.select('#'.concat(id)).style('stroke','white')
 							d3.select('#'.concat(id)).style('stroke-width',0.2)
 						})
 						.on("click", function(t) {		
