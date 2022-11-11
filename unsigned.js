@@ -1,10 +1,10 @@
 let data, geoData, geojson, positiveSurprise, negativeSurprise;
 let count = 0, row = "", counties = [], surpriseData = [], validation = [], checkSurprise = [], nsurprise = [], psurprise = [];
-let associatedIDs = [], associatedIDx = []
 let timeout = null, nsminmax, psminmax
 let mouseStartTime, mouseIdleTime, mouseLog = []
-let sd, avg
-let rgbColor, svg
+let toggleValue = 1
+let toggled = true
+let sd, avg, svg, lastSelected
 let red = "rgb(172,32,47)";
 let purple = "rgb(116,2,128)";
 let blue = "rgb(34,101,163)";
@@ -196,17 +196,11 @@ function drawGraph() {
 		.enter()
 		.append("path")
 			.attr("d", path)
-			.attr("stroke", "#FFF")
-			.attr("stroke-width", .3)
-			.attr("id", (d) => d.id)
+			.attr("stroke", "#000")
+			.attr("stroke-width", .2)
+			.attr("id", (d) => 'c'.concat(d.id))
 			.attr("class", function(d) {    let countyData = getCountyByFips(d.id)	
-											let id = getCountyRGB(countyData)
-											let cid = id.replaceAll(', ', '').replace('(','').replace(')','')
-											if (!associatedIDs.includes(cid)){
-												associatedIDs.push(cid)
-												associatedIDx.push(id)
-											}
-											return cid;
+											return getCountyRGB(countyData).replaceAll(', ', '').replace('(','').replace(')','');
 			})
 			.attr("fill", (d) => {      let countyData = getCountyByFips(d.id)
 										return getCountyRGB(countyData)
@@ -216,7 +210,7 @@ function drawGraph() {
 			.on("mouseover", handleMouseOver)
 			.on("mosemove", handleMouseMove)
 			.on("mouseout", handleMouseOut)
-			.on("click", handleClick)
+			.on("click", "")
 			.on("dblclick", function(d) {
 								clearTimeout(timeout);								
 							  });
@@ -225,7 +219,7 @@ function drawGraph() {
   let borders = g.append("path")
 	  	.classed("stateBorder", true)
 	  	.attr("fill", "none")
-	  	.attr("stroke", "white")
+	  	.attr("stroke", "black")
     .datum(topojson.mesh(geoData, geoData.objects.states), (a, b) => a !== b)
     	.attr('d', path)
 
@@ -308,12 +302,15 @@ function drawGraph() {
 					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Vacc Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
 				})
 
-		document.getElementById(el.id).parentElement.appendChild(document.getElementById(el.id))
 		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
-		document.getElementById(id).parentElement.appendChild(document.getElementById(id))
+		d3.select('#'.concat(id)).raise()
 		d3.select('#'.concat(id)).style('stroke','white')
 		d3.select('#'.concat(id)).style('stroke-width',2.5)
-		document.getElementById(el.id).style.stroke = 'black'
+		if (toggled) {
+			d3.select('#'.concat('c'.concat(el.id))).raise()
+			d3.select('#'.concat('c'.concat(el.id))).style("stroke", "white")
+			d3.select('#'.concat('c'.concat(el.id))).style("stroke-width", 1.5)
+		}
 	}}
 
 	function getCountyRGB(countyData){
@@ -337,8 +334,11 @@ function drawGraph() {
 				.style("opacity", 0)
 		tooltip
 				.style("left", "-1000px")  
-				.style("top", "-1000px")   
-		document.getElementById(el.id).style.stroke = 'white'
+				.style("top", "-1000px") 
+		if (toggled) {
+			d3.select('#'.concat('c'.concat(el.id))).style("stroke", "black")
+			d3.select('#'.concat('c'.concat(el.id))).style("stroke-width", 0.2)
+		}
 		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
 		d3.select('#'.concat(id)).style('stroke-width',0.2)
 	}

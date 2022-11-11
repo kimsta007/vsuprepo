@@ -5307,7 +5307,7 @@
 						.attr("fill", function(t) {							
 							return e(t.v);
 						})
-						.on("mouseover", function(t){//this.style.border = '5px solid red';
+						.on("mouseover", function(t){
 						    let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
 							document.getElementById(id).parentElement.appendChild(document.getElementById(id))
 							d3.select('#'.concat(id)).style('stroke','white')
@@ -5317,14 +5317,30 @@
 							let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
 							d3.select('#'.concat(id)).style('stroke-width',0.2)
 						})
-						.on("click", function(t) {			
-									let id = e(t.v).replaceAll(', ', '').replace('(','').replace(')','')
-									associatedIDs.forEach(function (item, index) {
-										if (item != id){
-											d3.selectAll('.'.concat(item)).style("fill", "#f0f0f0")
-										}
-									});
-									d3.selectAll('.'.concat(id)).style("fill", e(t.v))
+						.on("click", function(t) {		
+									let rgbColor = e(t.v)
+									let id = rgbColor.replaceAll(', ', '').replace('(','').replace(')','')
+									if (((toggleValue % 2) == 0) && (lastSelected != id)) {				
+										d3.selectAll('.'.concat(lastSelected)).style("stroke", "black")									
+										d3.selectAll('.'.concat(lastSelected)).style("stroke-width", 0.2)
+										d3.selectAll('.'.concat(id)).raise()
+										d3.selectAll('.'.concat(id)).style("stroke", "white")										
+										d3.selectAll('.'.concat(id)).style("stroke-width", 1.5)
+										toggled = false
+										lastSelected = id
+									} else if (((toggleValue % 2) == 0) && (lastSelected == id)){
+										    d3.selectAll('.'.concat(id)).style("stroke", "black")
+											d3.selectAll('.'.concat(id)).style("stroke-width", 0.2)
+											toggled = true
+											toggleValue -= 1
+									} else {		
+										d3.selectAll('.'.concat(id)).raise()							
+									    d3.selectAll('.'.concat(id)).style("stroke", "white")										
+										d3.selectAll('.'.concat(id)).style("stroke-width", 1.5)  
+										toggled = false
+										lastSelected = id
+										toggleValue += 1
+									}
 						}),
 					t && i.svgGroup.attr("id", t)
 				);
