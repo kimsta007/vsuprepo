@@ -5321,22 +5321,25 @@
 									let rgbColor = e(t.v)
 									let id = rgbColor.replaceAll(', ', '').replace('(','').replace(')','')
 									if (((toggleValue % 2) == 0) && (lastSelected != id)) {				
-										d3.selectAll('.'.concat(lastSelected)).style("stroke", "black")									
+										d3.selectAll('.'.concat(lastSelected)).style("stroke", "white")									
 										d3.selectAll('.'.concat(lastSelected)).style("stroke-width", 0.2)
 										d3.selectAll('.'.concat(id)).raise()
-										d3.selectAll('.'.concat(id)).style("stroke", "white")										
-										d3.selectAll('.'.concat(id)).style("stroke-width", 1.5)
+										d3.selectAll('.'.concat(id)).style("stroke", "black")												
+										d3.selectAll('.'.concat(id)).style("stroke-width", 1)
 										toggled = false
 										lastSelected = id
 									} else if (((toggleValue % 2) == 0) && (lastSelected == id)){
-										    d3.selectAll('.'.concat(id)).style("stroke", "black")
+										    d3.selectAll('.'.concat(id)).style("stroke", "white")
 											d3.selectAll('.'.concat(id)).style("stroke-width", 0.2)
+											d3.selectAll('.stateBorder').raise()
+										    d3.selectAll('.stateBorder').style("stroke", "black")
 											toggled = true
 											toggleValue -= 1
 									} else {		
 										d3.selectAll('.'.concat(id)).raise()							
-									    d3.selectAll('.'.concat(id)).style("stroke", "white")										
-										d3.selectAll('.'.concat(id)).style("stroke-width", 1.5)  
+									    d3.selectAll('.'.concat(id)).style("stroke", "black")										
+										d3.selectAll('.'.concat(id)).style("stroke-width", 1) 
+										d3.selectAll('.stateBorder').style("stroke", "white")
 										toggled = false
 										lastSelected = id
 										toggleValue += 1

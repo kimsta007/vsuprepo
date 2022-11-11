@@ -5,9 +5,9 @@ let mouseStartTime, mouseIdleTime, mouseLog = []
 let toggleValue = 1
 let toggled = true
 let sd, avg, svg, lastSelected
-let red = "rgb(172,32,47)";
-let purple = "rgb(116,2,128)";
-let blue = "rgb(34,101,163)";
+let red = "rgb(46, 115, 99)";
+let purple = "rgb(239, 219, 203)";
+let blue = "rgb(199, 117, 96)";
 let legend
 
 var erfc = function(x) {
@@ -196,7 +196,7 @@ function drawGraph() {
 		.enter()
 		.append("path")
 			.attr("d", path)
-			.attr("stroke", "#000")
+			.attr("stroke", "#FFF")
 			.attr("stroke-width", .2)
 			.attr("id", (d) => 'c'.concat(d.id))
 			.attr("class", function(d) {    let countyData = getCountyByFips(d.id)	
@@ -308,7 +308,7 @@ function drawGraph() {
 		d3.select('#'.concat(id)).style('stroke-width',2.5)
 		if (toggled) {
 			d3.select('#'.concat('c'.concat(el.id))).raise()
-			d3.select('#'.concat('c'.concat(el.id))).style("stroke", "white")
+			d3.select('#'.concat('c'.concat(el.id))).style("stroke", "black")
 			d3.select('#'.concat('c'.concat(el.id))).style("stroke-width", 1.5)
 		}
 	}}
@@ -336,11 +336,12 @@ function drawGraph() {
 				.style("left", "-1000px")  
 				.style("top", "-1000px") 
 		if (toggled) {
-			d3.select('#'.concat('c'.concat(el.id))).style("stroke", "black")
+			d3.select('#'.concat('c'.concat(el.id))).style("stroke", "white")
 			d3.select('#'.concat('c'.concat(el.id))).style("stroke-width", 0.2)
 		}
 		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
 		d3.select('#'.concat(id)).style('stroke-width',0.2)
+		d3.selectAll('.stateBorder').raise()
 	}
 
 	function handleMouseMove(el) {
