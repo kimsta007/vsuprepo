@@ -396,8 +396,10 @@ function calcSurprise(){
 			surpriseData.push({fips : +data[iter].fips, surprise: 0})
 			data[iter]['surprise'] = 0			
 		  } else {
-			data[iter]['surprise'] = +Math.abs(kl)
-		    surpriseData.push({fips : +data[iter].fips, surprise: +Math.abs(kl)})
+			 voteSum += diffs[0] * pMs[0];
+			let surprise = voteSum >= 0 ? +Math.abs(kl) : -1* +Math.abs(kl);
+			data[iter]['surprise'] = +surprise
+		    surpriseData.push({fips : +data[iter].fips, surprise: +surprise})
 			psurprise.push(+Math.abs(kl))
 	  }}
     }
