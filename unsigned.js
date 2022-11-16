@@ -205,6 +205,7 @@ function drawGraph() {
 			.attr("fill", (d) => {      let countyData = getCountyByFips(d.id)
 										return getCountyRGB(countyData)
 								 })
+			.classed('countyPath', true)
 			.attr("data-fips", (d) => d.id)
 			.attr("data-vaccinations", (d) => {getCountyByFips(d.id).series_complete_pop_pct})
 			.on("mouseover", handleMouseOver)

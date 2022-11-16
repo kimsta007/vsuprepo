@@ -5327,6 +5327,7 @@
 										d3.selectAll('.'.concat(id)).raise()
 										d3.selectAll('.'.concat(id)).style("stroke", "black")												
 										d3.selectAll('.'.concat(id)).style("stroke-width", 1)
+										d3.selectAll('.'.concat(id)).style("stroke-dasharray", "4,4")
 										toggled = false
 										lastSelected = id
 									} else if (((toggleValue % 2) == 0) && (lastSelected == id)){
@@ -5340,6 +5341,7 @@
 										d3.selectAll('.'.concat(id)).raise()							
 									    d3.selectAll('.'.concat(id)).style("stroke", "black")										
 										d3.selectAll('.'.concat(id)).style("stroke-width", 1) 
+										d3.selectAll('.'.concat(id)).style("stroke-dasharray", "4,4")									
 										d3.selectAll('.stateBorder').style("stroke", "white")
 										toggled = false
 										lastSelected = id
