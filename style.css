@@ -185,7 +185,7 @@ overflow-y: scroll !important;
 .countyPath {
   stroke-dasharray: 50;
   stroke-dashoffset: 1000;
-  animation: stroke 5s linear forwards;
+  animation: stroke 50s linear forwards;
   animation-iteration-count: infinite;
 }
 
