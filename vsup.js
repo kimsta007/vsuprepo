@@ -5308,29 +5308,43 @@
 							return e(t.v);
 						})
 						.on("mouseover", function(t){
-						    let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
-							document.getElementById(id).parentElement.appendChild(document.getElementById(id))
-							d3.select('#'.concat(id)).style('stroke','black')
-							d3.select('#'.concat(id)).style('stroke-width',2.5)
+							  if (toggled) {
+								let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
+								document.getElementById(id).parentElement.appendChild(document.getElementById(id))
+								d3.select('#'.concat(id)).style('stroke','black')
+								d3.select('#'.concat(id)).style('stroke-width',2.5)
+							  }
 						})
-						.on("mouseout", function(t){
-							let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
-							d3.select('#'.concat(id)).style('stroke','white')
-							d3.select('#'.concat(id)).style('stroke-width',0.2)
+						.on("mouseout", function(t){		
+							if (toggled) {
+								let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
+								d3.select('#'.concat(id)).style('stroke','white')
+								d3.select('#'.concat(id)).style('stroke-width',0.2)		
+							}								
 						})
 						.on("click", function(t) {		
 									let rgbColor = e(t.v)
 									let id = rgbColor.replaceAll(', ', '').replace('(','').replace(')','')
-									if (((toggleValue % 2) == 0) && (lastSelected != id)) {				
+									if (((toggleValue % 2) == 0) && (lastSelected != id)) {		
+										d3.selectAll('.'.concat(lastSelected)).classed("countyPath", false)
+										d3.selectAll('.'.concat(lastSelected)).style("stroke-dasharray", "none")
+										d3.selectAll('.'.concat(id)).classed("countyPath", true)									
 										d3.selectAll('.'.concat(lastSelected)).style("stroke", "white")									
 										d3.selectAll('.'.concat(lastSelected)).style("stroke-width", 0.2)
 										d3.selectAll('.'.concat(id)).raise()
 										d3.selectAll('.'.concat(id)).style("stroke", "black")												
 										d3.selectAll('.'.concat(id)).style("stroke-width", 1)
 										d3.selectAll('.'.concat(id)).style("stroke-dasharray", "4,4")
+										//Switch legend highlight
+										d3.select('#legend'.concat(lastSelected.replace('rgb', ''))).style('stroke','white')
+										d3.select('#legend'.concat(lastSelected.replace('rgb', ''))).style('stroke-width',0.2)
+										d3.select('#legend'.concat(id.replace('rgb', ''))).style('stroke','black')
+								        d3.select('#legend'.concat(id.replace('rgb', ''))).style('stroke-width',2.5)										
 										toggled = false
 										lastSelected = id
 									} else if (((toggleValue % 2) == 0) && (lastSelected == id)){
+										    d3.selectAll('.'.concat(id)).classed("countyPath", false)	
+											d3.selectAll('.'.concat(id)).style("stroke-dasharray", "none")
 										    d3.selectAll('.'.concat(id)).style("stroke", "white")
 											d3.selectAll('.'.concat(id)).style("stroke-width", 0.2)
 											d3.selectAll('.stateBorder').raise()
@@ -5338,11 +5352,12 @@
 											toggled = true
 											toggleValue -= 1
 									} else {		
+									    d3.selectAll('.'.concat(id)).classed("countyPath", true)
 										d3.selectAll('.'.concat(id)).raise()							
 									    d3.selectAll('.'.concat(id)).style("stroke", "black")										
 										d3.selectAll('.'.concat(id)).style("stroke-width", 1) 
 										d3.selectAll('.'.concat(id)).style("stroke-dasharray", "4,4")									
-										d3.selectAll('.stateBorder').style("stroke", "white")
+										d3.selectAll('.stateBorder').style("stroke", "white")										
 										toggled = false
 										lastSelected = id
 										toggleValue += 1

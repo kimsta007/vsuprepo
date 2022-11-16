@@ -205,7 +205,6 @@ function drawGraph() {
 			.attr("fill", (d) => {      let countyData = getCountyByFips(d.id)
 										return getCountyRGB(countyData)
 								 })
-			.classed('countyPath', true)
 			.attr("data-fips", (d) => d.id)
 			.attr("data-vaccinations", (d) => {getCountyByFips(d.id).series_complete_pop_pct})
 			.on("mouseover", handleMouseOver)
@@ -303,10 +302,7 @@ function drawGraph() {
 					<table style="width: 100%; margin-top: 0px; padding: 0px;"><tr style="border-bottom: 0.8px solid black;"><td>Vacc Rate</td><td>Surprise</td><td>Population</td></tr><tr><td style="font-size: 12px;">${county.series_complete_pop_pct.toFixed(2)}</td><td style="font-size: 12px;">${county.surprise.toFixed(3)}</td><td style="font-size: 12px;">${county.census2019}</td></tr></table>`
 				})
 
-		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
-		d3.select('#'.concat(id)).raise()
-		d3.select('#'.concat(id)).style('stroke','black')
-		d3.select('#'.concat(id)).style('stroke-width',2.5)
+	
 		if (toggled) {
 			d3.select('#'.concat('c'.concat(el.id))).raise()
 			d3.select('#'.concat('c'.concat(el.id))).style("stroke", "black")
@@ -341,10 +337,6 @@ function drawGraph() {
 			d3.select('#'.concat('c'.concat(el.id))).style("stroke-width", 0.2)
 		    d3.selectAll('.stateBorder').raise()
 		}
-		let id = 'legend'.concat(getCountyRGB(county).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
-		d3.select('#'.concat(id)).style('stroke','white')
-		d3.select('#'.concat(id)).style('stroke-width',0.2)
-	
 	}
 
 	function handleMouseMove(el) {
