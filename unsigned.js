@@ -219,7 +219,8 @@ function drawGraph() {
   let borders = g.append("path")
 	  	.classed("stateBorder", true)
 	  	.attr("fill", "none")
-	  	.attr("stroke", "black")
+	  	.attr("stroke", "#252525")
+		.style("opacity", 0.6)
     .datum(topojson.mesh(geoData, geoData.objects.states), (a, b) => a !== b)
     	.attr('d', path)
 

@@ -5330,8 +5330,8 @@
 							}
 							if (lastHovered == null) {
 								d3.selectAll('.stateBorder').raise()
-							    d3.selectAll('.stateBorder').style("stroke", "black")
-								d3.selectAll('.stateBorder').style("opacity", 1)	
+							    //d3.selectAll('.stateBorder').style("stroke", "black")
+								//d3.selectAll('.stateBorder').style("opacity", 1)	
 							}
 						})
 						.on("click", function(t) {		
@@ -5358,8 +5358,8 @@
 										    d3.selectAll('.'.concat(id)).style("stroke", "white")
 											d3.selectAll('.'.concat(id)).style("stroke-width", 0.2)
 											d3.selectAll('.stateBorder').raise()
-										    d3.selectAll('.stateBorder').style("stroke", "black")
-											d3.selectAll('.stateBorder').style("opacity", 1)		
+										    //d3.selectAll('.stateBorder').style("stroke", "black")
+											//d3.selectAll('.stateBorder').style("opacity", 1)		
 											toggled = true
 											toggleValue -= 1
 									} else {		
@@ -5379,8 +5379,8 @@
 	     d3.selectAll('.'.concat(id)).style("stroke", "black")										
 		 d3.selectAll('.'.concat(id)).style("stroke-width", 1) 
 		 d3.selectAll('.'.concat(id)).style("stroke-dasharray", "4,4")									
-		 d3.selectAll('.stateBorder').style("stroke", "#252525")	
-	     d3.selectAll('.stateBorder').style("opacity", 0.5)	
+		// d3.selectAll('.stateBorder').style("stroke", "#252525")	
+	    // d3.selectAll('.stateBorder').style("opacity", 0.5)	
 	}
 	function unHighlightCounties(id, lastSelected){
 		d3.selectAll('.'.concat(lastSelected)).classed("countyPath", false)
