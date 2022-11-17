@@ -4,7 +4,7 @@ let timeout = null, nsminmax, psminmax
 let mouseStartTime, mouseIdleTime, mouseLog = []
 let toggleValue = 1
 let toggled = true
-let sd, avg, svg, lastSelected
+let sd, avg, svg, lastSelected, lastHovered = null
 let red = "rgb(46, 115, 99)";
 let purple = "rgb(239, 219, 203)";
 let blue = "rgb(199, 117, 96)";

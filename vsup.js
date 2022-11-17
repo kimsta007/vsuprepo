@@ -5310,27 +5310,36 @@
 						.on("mouseover", function(t){
 							  if (toggled) {
 								let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
-								document.getElementById(id).parentElement.appendChild(document.getElementById(id))
+								d3.select('#'.concat(id)).raise()
 								d3.select('#'.concat(id)).style('stroke','black')
 								d3.select('#'.concat(id)).style('stroke-width',2.5)
+								//animate on hover
+								lastHovered = e(t.v).replaceAll(', ', '').replace('(','').replace(')','')
+							    highlightCounties(lastHovered)		
 							  }
 						})
 						.on("mouseout", function(t){		
 							if (toggled) {
 								let id = 'legend'.concat(e(t.v).replaceAll(', ', '').replace('(','').replace(')','').replace('rgb',''))
 								d3.select('#'.concat(id)).style('stroke','white')
-								d3.select('#'.concat(id)).style('stroke-width',0.2)		
-							}								
+								d3.select('#'.concat(id)).style('stroke-width',0.2)	
+							}	
+							if (lastHovered != null && toggled){
+									unHighlightCounties(e(t.v).replaceAll(', ', '').replace('(','').replace(')',''), lastHovered)
+									lastHovered = null
+							}
+							if (lastHovered == null) {
+								d3.selectAll('.stateBorder').raise()
+							    d3.selectAll('.stateBorder').style("stroke", "black")
+								d3.selectAll('.stateBorder').style("opacity", 1)	
+							}
 						})
 						.on("click", function(t) {		
 									let rgbColor = e(t.v)
 									let id = rgbColor.replaceAll(', ', '').replace('(','').replace(')','')
 									if (((toggleValue % 2) == 0) && (lastSelected != id)) {		
-										d3.selectAll('.'.concat(lastSelected)).classed("countyPath", false)
-										d3.selectAll('.'.concat(lastSelected)).style("stroke-dasharray", "none")
-										d3.selectAll('.'.concat(id)).classed("countyPath", true)									
-										d3.selectAll('.'.concat(lastSelected)).style("stroke", "white")									
-										d3.selectAll('.'.concat(lastSelected)).style("stroke-width", 0.2)
+								        unHighlightCounties(id, lastSelected)
+									    d3.selectAll('.'.concat(id)).classed("countyPath", true)	
 										d3.selectAll('.'.concat(id)).raise()
 										d3.selectAll('.'.concat(id)).style("stroke", "black")												
 										d3.selectAll('.'.concat(id)).style("stroke-width", 1)
@@ -5339,7 +5348,8 @@
 										d3.select('#legend'.concat(lastSelected.replace('rgb', ''))).style('stroke','white')
 										d3.select('#legend'.concat(lastSelected.replace('rgb', ''))).style('stroke-width',0.2)
 										d3.select('#legend'.concat(id.replace('rgb', ''))).style('stroke','black')
-								        d3.select('#legend'.concat(id.replace('rgb', ''))).style('stroke-width',2.5)										
+								        d3.select('#legend'.concat(id.replace('rgb', ''))).style('stroke-width',2.5)	
+										d3.selectAll('.stateBorder').raise()																					
 										toggled = false
 										lastSelected = id
 									} else if (((toggleValue % 2) == 0) && (lastSelected == id)){
@@ -5349,15 +5359,11 @@
 											d3.selectAll('.'.concat(id)).style("stroke-width", 0.2)
 											d3.selectAll('.stateBorder').raise()
 										    d3.selectAll('.stateBorder').style("stroke", "black")
+											d3.selectAll('.stateBorder').style("opacity", 1)		
 											toggled = true
 											toggleValue -= 1
 									} else {		
-									    d3.selectAll('.'.concat(id)).classed("countyPath", true)
-										d3.selectAll('.'.concat(id)).raise()							
-									    d3.selectAll('.'.concat(id)).style("stroke", "black")										
-										d3.selectAll('.'.concat(id)).style("stroke-width", 1) 
-										d3.selectAll('.'.concat(id)).style("stroke-dasharray", "4,4")									
-										d3.selectAll('.stateBorder').style("stroke", "white")										
+									    highlightCounties(id)										
 										toggled = false
 										lastSelected = id
 										toggleValue += 1
@@ -5366,6 +5372,21 @@
 					t && i.svgGroup.attr("id", t)
 				);
 		}), i;
+	}
+	function highlightCounties(id){
+		 d3.selectAll('.'.concat(id)).classed("countyPath", true)
+		 d3.selectAll('.'.concat(id)).raise()							
+	     d3.selectAll('.'.concat(id)).style("stroke", "black")										
+		 d3.selectAll('.'.concat(id)).style("stroke-width", 1) 
+		 d3.selectAll('.'.concat(id)).style("stroke-dasharray", "4,4")									
+		 d3.selectAll('.stateBorder').style("stroke", "#252525")	
+	     d3.selectAll('.stateBorder').style("opacity", 0.5)	
+	}
+	function unHighlightCounties(id, lastSelected){
+		d3.selectAll('.'.concat(lastSelected)).classed("countyPath", false)
+		d3.selectAll('.'.concat(lastSelected)).style("stroke-dasharray", "none")									
+		d3.selectAll('.'.concat(lastSelected)).style("stroke", "white")									
+		d3.selectAll('.'.concat(lastSelected)).style("stroke-width", 0.2)
 	}
 	(Of.prototype = {
 		areaStart: function() {
