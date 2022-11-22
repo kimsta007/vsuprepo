@@ -117,8 +117,8 @@ function drawGraph() {
                             .stroke('red')
                             .shapeRendering("crispEdges");
 							
-	let vDom = [0, 1];
-	let uDom = [0.1, 0];
+	let vDom = calculateIQRange(validation);
+	let uDom = [calculateIQRange(psurprise)[1], 0];
 
 	let interpolateIsoRdBu = d3.scaleLinear()
 			  .domain([0,0.5,1])
@@ -427,3 +427,13 @@ function createTexture(color){
                 .stroke("white")
                 .background(color)
 }
+
+function calculateIQRange(array){
+	let upper = lower = array.sort(d3.ascending)		
+	let medianLoc = (array.length % 2 == 0) ? upper.indexOf(ss.median(upper)) : (array.length / 2)
+	upper = upper.slice(medianLoc, upper.length)
+	lower = lower.slice(0, medianLoc)
+	let q1 = ss.median(lower), q3 = ss.median(upper)
+	let iqr = q3 - q1
+	return [q1 - (1.5 * iqr), q3 + (1.5 * iqr)]
+  }
